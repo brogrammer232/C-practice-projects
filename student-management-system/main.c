@@ -23,7 +23,7 @@ int studentCount = 0;
 // Functions declaration.
 void addStudent();
 void displayStudents();
-char getOption();
+char getCharacter();
 void printOptions();
 
 
@@ -33,8 +33,9 @@ int main() {
 
 	// Mainloop.
 	while (true) {
+		system("clear");
 		printOptions();
-		user_input = getOption();
+		user_input = getCharacter();
 
 		if ('e' == user_input) {exit(0);}
 		else if ('1' == user_input) {displayStudents();}
@@ -61,6 +62,7 @@ void addStudent() {
     }
 
     // Ask for student details
+    system("clear");
     printf("What's the student's name: ");
     scanf("%19s", STUDENTS[studentCount].name); // Limit input to 19 chars for safety
 
@@ -77,10 +79,14 @@ void addStudent() {
     printf("Zip: ");
     scanf("%d", &STUDENTS[studentCount].address.zip);
 
+    STUDENTS[studentCount].ID = studentCount;
+
     // Increment student count after adding the student
     studentCount++;
 
-    printf("Student added successfully!\n\n");
+    printf("Student added successfully!\n");
+    printf("Press any key to continue.\n");
+    getCharacter();
 }
 
 
@@ -88,22 +94,32 @@ void displayStudents() {
 	/* This function prints all the students in the system. */
 	struct Student student;
 
+	system("clear");
 	if (0 == studentCount) {
 		printf("There are currently no students in the system.\n");
 	}
 	else {
 		for (int i = 0; i < studentCount; i++) {
 			student = STUDENTS[i];
-			printf("Name: %s\n", student.name);
+			printf("Student %d.\n", (i + 1));
+			printf("    Name: %s\n", student.name);
+			printf("    ID: %d\n", student.ID);
+			printf("    Grade: %d\n", student.grade);
+			printf("    Address: %s town, %s street, %d zip\n",
+				student.address.town, student.address.street,
+				student.address.zip);
 		}
 	}
+
+	printf("Press any key to continue.\n");
+    getCharacter();
 }
 
 
-char getOption() {
+char getCharacter() {
 	/* This option gets and returns a character from the user. */
 	char character = getchar();
-	if ('\n' == character) {return getOption();} // Recursive function to avoid newlines.
+	if ('\n' == character) {return getCharacter();} // Recursive function to avoid newlines.
 	return character;
 }
 
