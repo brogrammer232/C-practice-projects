@@ -6,12 +6,12 @@
 
 // Global variables.
 struct Student {
-	char *name;
+	char name[20];
 	int ID;
 	int grade;
 	struct {
-		char *town;
-		char *street;
+		char town[10];
+		char street[10];
 		int zip;
 	} address;
 };
@@ -24,7 +24,6 @@ int studentCount = 0;
 void addStudent();
 void displayStudents();
 char getCharacter();
-char* getLine();
 void printOptions();
 
 
@@ -65,22 +64,25 @@ void addStudent() {
     // Ask for student details
     system("clear");
     printf("What's the student's name: ");
-    STUDENTS[studentCount].name = getLine();
+    scanf("%19s", STUDENTS[studentCount].name); // Limit input to 19 chars for safety
 
     printf("Enter student's grade: ");
-    scanf("%3d", &STUDENTS[studentCount].grade);
+    scanf("%d", &STUDENTS[studentCount].grade);
 
     printf("Provide the following for the address.\n");
     printf("Town: ");
-    STUDENTS[studentCount].address.town = getLine();
+    scanf("%9s", STUDENTS[studentCount].address.town); // Limit input to 9 chars for safety
 
     printf("Street: ");
-    STUDENTS[studentCount].address.street = getLine();
+    scanf("%9s", STUDENTS[studentCount].address.street); // Limit input to 9 chars for safety
 
     printf("Zip: ");
     scanf("%d", &STUDENTS[studentCount].address.zip);
 
-    STUDENTS[studentCount].ID = ++studentCount;
+    STUDENTS[studentCount].ID = studentCount;
+
+    // Increment student count after adding the student
+    studentCount++;
 
     printf("Student added successfully!\n");
     printf("Press any key to continue.\n");
@@ -118,44 +120,7 @@ char getCharacter() {
 	/* This option gets and returns a character from the user. */
 	char character = getchar();
 	if ('\n' == character) {return getCharacter();} // Recursive function to avoid newlines.
-	getchar();
 	return character;
-}
-
-
-char* getLine() {
-	/* This function gets a line of unlimited size and returns it. */
-	char character;
-	int input_size = 0;
-
-	// Initial memory allocation.
-	char *line = (char*) malloc(1);
-	if (!line) {
-		printf("Memory allocation failed.\n");
-		return NULL;
-	}
-
-	// Getting characters until a new line is encountered.
-	while (true) {
-		character = getchar();
-
-		// Breaking out of the loop.
-		if ('\n' == character && input_size != 0 || EOF == character) {break;}
-
-		// Taking the input.
-		line[input_size++] = character;
-
-		// Increasing memory size.
-		line = (char*) realloc(line, (input_size + 1));
-		if (!line) {
-			printf("Memory reallocation failed.\n");
-			return NULL;
-		}
-
-	}
-
-	line[input_size] = '\0';
-	return line;
 }
 
 
