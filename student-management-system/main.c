@@ -135,12 +135,16 @@ char* getLine() {
 		return NULL;
 	}
 
-	// Getting characters until a new line is encountered.
+
+	// Getting more characters until a new line is encountered.
 	while (true) {
 		character = getchar();
 
 		// Breaking out of the loop.
-		if ('\n' == character && input_size != 0 || EOF == character) {break;}
+		if ('\n' == character || EOF == character) {
+			if (0 == input_size) {continue;} // Dealing with stray newline.
+			break;
+		}
 
 		// Taking the input.
 		line[input_size++] = character;
