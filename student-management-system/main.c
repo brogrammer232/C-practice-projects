@@ -25,6 +25,7 @@ void addStudent();
 void displayStudents();
 void showContinueMessage();
 char getCharacter();
+int getInteger(int *variable);
 char* getLine();
 void printOptions();
 
@@ -69,8 +70,7 @@ void addStudent() {
     STUDENTS[studentCount].name = getLine();
 
     printf("Enter student's grade: ");
-    scanf("%3d", &STUDENTS[studentCount].grade);
-    getchar();
+    getInteger(&STUDENTS[studentCount].grade);
 
     printf("Provide the following for the address.\n");
     printf("Town: ");
@@ -80,12 +80,11 @@ void addStudent() {
     STUDENTS[studentCount].address.street = getLine();
 
     printf("Zip: ");
-    scanf("%d", &STUDENTS[studentCount].address.zip);
-    getchar();
+    getInteger(&STUDENTS[studentCount].address.zip);
 
     STUDENTS[studentCount].ID = ++studentCount;
 
-    printf("Student added successfully!\n");
+    printf("Student added successfully!\n\n");
     showContinueMessage();
 }
 
@@ -105,7 +104,7 @@ void displayStudents() {
 			printf("    Name: %s\n", student.name);
 			printf("    ID: %d\n", student.ID);
 			printf("    Grade: %d\n", student.grade);
-			printf("    Address: %s town, %s street, %d zip\n",
+			printf("    Address: %s town, %s street, %d zip\n\n",
 				student.address.town, student.address.street,
 				student.address.zip);
 		}
@@ -132,6 +131,15 @@ char getCharacter() {
 }
 
 
+int getInteger(int *variable) {
+	/* This function gets an integer input from the user and stores it
+	in the given variable. It also takes the newline character to avoid
+	bugs. */
+	scanf("%d", variable);
+	getchar();
+}
+
+
 char* getLine() {
 	/* This function gets a line of unlimited size and returns it. */
 	char character;
@@ -145,7 +153,7 @@ char* getLine() {
 	}
 
 
-	// Getting more characters until a new line is encountered.
+	// Getting characters until a new line is encountered.
 	while (true) {
 		character = getchar();
 
