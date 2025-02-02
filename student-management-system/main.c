@@ -23,6 +23,7 @@ int studentCount = 0;
 // Functions declaration.
 void addStudent();
 void displayStudents();
+void showContinueMessage();
 char getCharacter();
 char* getLine();
 void printOptions();
@@ -69,6 +70,7 @@ void addStudent() {
 
     printf("Enter student's grade: ");
     scanf("%3d", &STUDENTS[studentCount].grade);
+    getchar();
 
     printf("Provide the following for the address.\n");
     printf("Town: ");
@@ -79,12 +81,12 @@ void addStudent() {
 
     printf("Zip: ");
     scanf("%d", &STUDENTS[studentCount].address.zip);
+    getchar();
 
     STUDENTS[studentCount].ID = ++studentCount;
 
     printf("Student added successfully!\n");
-    printf("Press any key to continue.\n");
-    getCharacter();
+    showContinueMessage();
 }
 
 
@@ -109,8 +111,15 @@ void displayStudents() {
 		}
 	}
 
-	printf("Press any key to continue.\n");
-    getCharacter();
+	showContinueMessage();
+}
+
+
+void showContinueMessage(){
+	/* This function simply directs the user to press a certain key
+	to move to the next screen. */
+	printf("Press ENTER to continue.\n");
+	getchar();
 }
 
 
