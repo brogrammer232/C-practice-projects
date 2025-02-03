@@ -3,6 +3,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdbool.h>
+#include <string.h>
 
 // Global variables.
 struct Student {
@@ -29,6 +30,12 @@ char getCharacter();
 int getInteger(int *variable);
 char* getLine();
 void printOptions();
+void sortStudents();
+
+int sortNameAscending(const void *a, const void *b);
+int sortNameDescending(const void *a, const void *b);
+int sortGradeAscending(const void *a, const void *b);
+int sortGradeDescending(const void *a, const void *b);
 
 
 // Main function.
@@ -43,7 +50,8 @@ int main() {
 
 		if ('e' == user_input) {exitApp(0);}
 		else if ('1' == user_input) {displayStudents();}
-		else if ('2' == user_input) {addStudent();}
+		else if ('2' == user_input) {sortStudents();}
+		else if ('3' == user_input) {addStudent();}
 		else {
 			printf("Invalid option!! Try again.: %c\n", user_input);
 		}
@@ -96,7 +104,7 @@ void displayStudents() {
 
 	system("clear");
 	if (0 == studentCount) {
-		printf("There are currently no students in the system.\n");
+		printf("There are currently no students in the system.\n\n");
 	}
 	else {
 		for (int i = 0; i < studentCount; i++) {
@@ -203,6 +211,71 @@ void printOptions() {
 	/* This functions prints all the available options. */
 	printf("Student Management System.\n");
 	printf("    1: Display students.\n");
-	printf("    2: Add student.\n");
+	printf("    2: Sort students.\n");
+	printf("    3: Add student.\n");
 	printf("    e: Exit\n");
+}
+
+
+void sortStudents() {
+	/* This function sorts the STUDENTS list either by name or by
+	grade. */
+	int sort_by, order;
+
+	// Getting required information from the user.
+	system("clear");
+	printf("Sort by (1:name, 2:grade): ");
+	getInteger(&sort_by);
+
+	printf("Order (1:ascending, 2:descending): ");
+	getInteger(&order);
+
+
+	// Executing.
+	switch (sort_by) {
+	case 1:
+		if (1 == order) {
+			qsort(STUDENTS, studentCount, sizeof(struct Student), sortNameAscending);
+		}
+		else if(2 == order) {
+			qsort(STUDENTS, studentCount, sizeof(struct Student), sortNameDescending);
+		}
+
+	case 2:
+		if (1 == order) {
+			qsort(STUDENTS, studentCount, sizeof(struct Student), sortGradeAscending);
+		}
+		else if(2 == order) {
+			qsort(STUDENTS, studentCount, sizeof(struct Student), sortGradeDescending);
+		}
+	}
+}
+
+
+int sortNameAscending(const void *a, const void *b) {
+	/* This function is passed to the 'qsort' function to sort STUDENTS
+	by name	in ascending order. */
+	return strcmp((((struct Student *)a) -> name),
+		(((struct Student *)b) -> name));
+}
+
+int sortNameDescending(const void *a, const void *b) {
+	/* This function is passed to the 'qsort' function to sort STUDENTS
+	by name in descending order. */
+	return strcmp((((struct Student *)b) -> name),
+		(((struct Student *)a) -> name));
+}
+
+int sortGradeAscending(const void *a, const void *b) {
+	/* This function is passed to the 'qsort' function to sort STUDENTS
+	by grade in ascending order. */
+	return (((struct Student *)a) -> grade
+		) - (((struct Student *)b) -> grade);
+}
+
+int sortGradeDescending(const void *a, const void *b) {
+	/* This function is passed to the 'qsort' function to srot STUDENTS
+	by grade in descending order. */
+	return (((struct Student *)b) -> grade
+		) - (((struct Student *)a) -> grade);
 }
