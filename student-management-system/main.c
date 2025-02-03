@@ -23,6 +23,7 @@ int studentCount = 0;
 // Functions declaration.
 void addStudent();
 void displayStudents();
+void exitApp(int status);
 void showContinueMessage();
 char getCharacter();
 int getInteger(int *variable);
@@ -40,7 +41,7 @@ int main() {
 		printOptions();
 		user_input = getCharacter();
 
-		if ('e' == user_input) {exit(0);}
+		if ('e' == user_input) {exitApp(0);}
 		else if ('1' == user_input) {displayStudents();}
 		else if ('2' == user_input) {addStudent();}
 		else {
@@ -111,6 +112,24 @@ void displayStudents() {
 	}
 
 	showContinueMessage();
+}
+
+
+void exitApp(int status) {
+	/* This function does everything needed before exiting the app,
+	then it exits. */
+	struct Student student;
+
+	// Freeing memory.
+	for (int i = 0; i < studentCount; i++) {
+		student = STUDENTS[i];
+		free(student.name);
+		free(student.address.town);
+		free(student.address.street);
+	}
+
+	// Exiting.
+	exit(status);
 }
 
 
