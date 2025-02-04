@@ -2,7 +2,7 @@
 
 This project manages students records using structures.
 
-### Features
+## Features
 The following information about the student is collected and stored:  
   >Name, ID, grade, Address (Town, Street, Zip).
 
@@ -18,7 +18,8 @@ Upcoming features:
 Bonus challenge:  
   >Save and load data from a file.
 
-### Practice concepts
+
+## Practice concepts
 Nested structures.  
 Arrays of structures.  
 Using pointers in structures.  
