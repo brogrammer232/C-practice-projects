@@ -25,11 +25,11 @@ int studentCount = 0;
 void addStudent();
 void displayStudents();
 void exitApp(int status);
-void showContinueMessage();
-char getCharacter();
+char getCharacter(char valid_characters_array[], int array_size);
 int getInteger(int *variable);
 char* getLine();
 void printOptions();
+void showContinueMessage();
 void sortStudents();
 
 int sortNameAscending(const void *a, const void *b);
@@ -46,7 +46,11 @@ int main() {
 	while (true) {
 		system("clear");
 		printOptions();
-		user_input = getCharacter();
+
+		// Taking user input.
+		char valid_characters[] = {'e', '1', '2', '3'};
+		int array_size = 4;
+		user_input = getCharacter(valid_characters , array_size);
 
 		if ('e' == user_input) {exitApp(0);}
 		else if ('1' == user_input) {displayStudents();}
@@ -141,18 +145,41 @@ void exitApp(int status) {
 }
 
 
-void showContinueMessage(){
-	/* This function simply directs the user to press a certain key
-	to move to the next screen. */
-	printf("Press ENTER to continue.\n");
-	getchar();
-}
+char getCharacter(char valid_characters_array[], int array_size) {
+	/* This function gets and returns a character from the user.
+	It takes two parameters:
+		valid_characters_array: An array of valid characters. The user
+			will be prompted to enter a character if the previously
+			entered character is not in the array. If the array is
+			empty, all characters will be accepted.
 
+		array_size: This is the size of the 'valid_characters_array'.
+			Set this to 0 to accept all characters.
+	*/
 
-char getCharacter() {
-	/* This option gets and returns a character from the user. */
 	char character = getchar();
-	if ('\n' == character) {return getCharacter();} // Recursive function to avoid newlines.
+	if ('\n' == character) {return getCharacter(valid_characters_array, array_size);} // Recursive function to avoid newlines.
+
+	// Validating input.
+	bool valid_input = false;
+	if (0 < array_size) {
+		char valid_character;
+		for (int i = 0; i < array_size; i++) {
+			valid_character = valid_characters_array[i];
+
+			if (valid_character == character) {
+				valid_input = true;
+				break;
+			}
+		}
+
+		if (!valid_input) {
+			printf("Invalid choice. Try again:\n");
+			return getCharacter(valid_characters_array, array_size);}
+	}
+	else if (0 == array_size) {valid_input = true;}
+
+	// Returning the result.
 	getchar();
 	return character;
 }
@@ -214,6 +241,14 @@ void printOptions() {
 	printf("    2: Sort students.\n");
 	printf("    3: Add student.\n");
 	printf("    e: Exit\n");
+}
+
+
+void showContinueMessage(){
+	/* This function simply directs the user to press a certain key
+	to move to the next screen. */
+	printf("Press ENTER to continue.\n");
+	getchar();
 }
 
 
