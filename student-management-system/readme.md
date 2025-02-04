@@ -19,7 +19,7 @@ Bonus challenge:
   >Save and load data from a file.
 
 ### Practice concepts
-Nested structures.
-Arrays of structures.
-Using pointers in structures.
-Sorting and searching.
+Nested structures.  
+Arrays of structures.  
+Using pointers in structures.  
+Sorting and searching.  
