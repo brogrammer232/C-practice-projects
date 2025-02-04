@@ -4,7 +4,7 @@ This project manages students records using structures.
 
 ### Features
 The following information about the student is collected and stored:  
-  Name, ID, grade, Address (Town, Street, Zip).
+  >Name, ID, grade, Address (Town, Street, Zip).
 
 The following actions can be done:  
   Add students.  
