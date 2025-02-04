@@ -12,11 +12,11 @@ The following actions can be done:
   >Sort the students by grade or by name in ascending or descending order.  
 
 Upcoming features:  
-  Removing students.  
-  Searching students by name or grade.  
+  >Removing students.  
+  >Searching students by name or grade.  
 
-Bonus challenge:
-  Save and load data from a file.
+Bonus challenge:  
+  >Save and load data from a file.
 
 ### Practice concepts
 Nested structures.
