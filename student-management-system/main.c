@@ -30,7 +30,7 @@ int getInteger(int *variable);
 char* getLine();
 void printOptions();
 void showContinueMessage();
-void sortStudents();
+int sortStudents();
 
 int sortNameAscending(const void *a, const void *b);
 int sortNameDescending(const void *a, const void *b);
@@ -49,16 +49,13 @@ int main() {
 
 		// Taking user input.
 		char valid_characters[] = {'e', '1', '2', '3'};
-		int array_size = 4;
+		int array_size = (sizeof(valid_characters) / sizeof(valid_characters[0]));
 		user_input = getCharacter(valid_characters , array_size);
 
 		if ('e' == user_input) {exitApp(0);}
 		else if ('1' == user_input) {displayStudents();}
 		else if ('2' == user_input) {sortStudents();}
 		else if ('3' == user_input) {addStudent();}
-		else {
-			printf("Invalid option!! Try again.: %c\n", user_input);
-		}
 	}
 
 	return 0;
@@ -226,7 +223,6 @@ char* getLine() {
 			printf("Memory reallocation failed.\n");
 			return NULL;
 		}
-
 	}
 
 	line[input_size] = '\0';
@@ -252,13 +248,21 @@ void showContinueMessage(){
 }
 
 
-void sortStudents() {
+int sortStudents() {
 	/* This function sorts the STUDENTS list either by name or by
 	grade. */
 	int sort_by, order;
 
-	// Getting required information from the user.
 	system("clear");
+
+	// Bailing if there are not students.
+	if (0 == studentCount) {
+		printf("There are currently no enrolled students.\n\n");
+		showContinueMessage();
+		return 1;
+	}
+
+	// Getting required information from the user.
 	printf("Sort by (1:name, 2:grade): ");
 	getInteger(&sort_by);
 
@@ -284,6 +288,8 @@ void sortStudents() {
 			qsort(STUDENTS, studentCount, sizeof(struct Student), sortGradeDescending);
 		}
 	}
+
+	return 0;
 }
 
 
