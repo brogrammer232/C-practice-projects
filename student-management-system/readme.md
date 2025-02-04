@@ -7,9 +7,9 @@ The following information about the student is collected and stored:
   >Name, ID, grade, Address (Town, Street, Zip).
 
 The following actions can be done:  
-  Add students.  
-  Display student details.  
-  Sort the students by grade or by name in ascending or descending order.  
+  >Add students.  
+  >Display student details.  
+  >Sort the students by grade or by name in ascending or descending order.  
 
 Upcoming features:  
   Removing students.  
