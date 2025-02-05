@@ -8,11 +8,11 @@ The following information about the student is collected and stored:
 
 The following actions can be done:  
   >Add students.  
+  >Remove students.  
   >Display student details.  
   >Sort the students by grade or by name in ascending or descending order.  
 
 Upcoming features:  
-  >Removing students.  
   >Searching students by name or grade.  
 
 Bonus challenge:  
