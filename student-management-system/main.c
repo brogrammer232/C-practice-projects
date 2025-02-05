@@ -29,6 +29,7 @@ char getCharacter(char valid_characters_array[], int array_size);
 int getInteger(int *variable);
 char* getLine();
 void printOptions();
+void removeStudent();
 void showContinueMessage();
 int sortStudents();
 
@@ -48,7 +49,7 @@ int main() {
 		printOptions();
 
 		// Taking user input.
-		char valid_characters[] = {'e', '1', '2', '3'};
+		char valid_characters[] = {'e', '1', '2', '3', '4'};
 		int array_size = (sizeof(valid_characters) / sizeof(valid_characters[0]));
 		user_input = getCharacter(valid_characters , array_size);
 
@@ -56,6 +57,7 @@ int main() {
 		else if ('1' == user_input) {displayStudents();}
 		else if ('2' == user_input) {sortStudents();}
 		else if ('3' == user_input) {addStudent();}
+		else if ('4' == user_input) {removeStudent();}
 	}
 
 	return 0;
@@ -236,11 +238,58 @@ void printOptions() {
 	printf("    1: Display students.\n");
 	printf("    2: Sort students.\n");
 	printf("    3: Add student.\n");
+	printf("    4: Remove student.\n");
 	printf("    e: Exit\n");
 }
 
 
-void showContinueMessage(){
+void removeStudent() {
+	/* This function removes a student from the array. */
+	char *student_name;
+
+	system("clear");
+
+	// Showing enrolled students.
+	if (0 == studentCount) {
+		printf("There are currently no enrolled students.\n\n");
+		showContinueMessage();
+		return;
+	}
+
+	printf("Enrolled students:\n");
+	for (int i = 0; i < studentCount; i++) {
+		student_name = STUDENTS[i].name;
+		printf("%s; ", student_name);
+	}
+	printf("\n");
+
+	// Getting the name of the student to remove.
+	printf("Enter the name of the student to remove: ");
+	student_name = getLine();
+
+
+	for (int i = 0; i < studentCount; i++) {
+		// Confirming the given student exists.
+		if (*STUDENTS[i].name == *student_name) {
+			printf("\nRemoving the student...\n");
+
+			// Removing the student with the given name.
+			for (int j = i; j < studentCount; j++) {
+				STUDENTS[j] = STUDENTS[j + 1];
+			}
+			studentCount--;
+			printf("Student removed.\n\n");
+			showContinueMessage();
+			return;
+		}
+
+	}
+	printf("No student has the name given.\n");
+	showContinueMessage();
+}
+
+
+void showContinueMessage() {
 	/* This function simply directs the user to press a certain key
 	to move to the next screen. */
 	printf("Press ENTER to continue.\n");
