@@ -166,7 +166,6 @@ void* get_user_input(void* argument){
 	while (playing) {
 		user_input = getchar();
 	}
-
 }
 
 
