@@ -1,6 +1,0 @@
-main.c: In function ‘main’:
-main.c:14:54: error: ‘G_APPLICATIONS_FLAGS_NONE’ undeclared (first use in this function); did you mean ‘G_APPLICATION_FLAGS_NONE’?
-   14 |     app = gtk_application_new("com.example.notepad", G_APPLICATIONS_FLAGS_NONE);
-      |                                                      ^~~~~~~~~~~~~~~~~~~~~~~~~
-      |                                                      G_APPLICATION_FLAGS_NONE
-main.c:14:54: note: each undeclared identifier is reported only once for each function it appears in
