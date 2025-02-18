@@ -5,6 +5,7 @@
 
 // Global variables.
 GtkWidget *text_view;
+gchar *FILENAME;
 
 
 // Functions declaration.
@@ -13,6 +14,7 @@ static void on_file_selected(GObject *object, GAsyncResult *res,
     gpointer user_data);
 static void on_open_clicked(GtkWidget *widget, gpointer text_view);
 static void on_save_clicked(GtkWidget *widget, gpointer text_view);
+static void on_save_clicked2(GtkWidget *widget, gpointer text_view);
 static void on_save_file_selected(GObject *object, GAsyncResult *res,
     gpointer user_data);
 
@@ -26,6 +28,7 @@ int main(int argc, char *argv[]) {
     g_signal_connect(app, "activate", G_CALLBACK(activate), NULL);
     status = g_application_run(G_APPLICATION(app), argc, argv);
     g_object_unref(app);
+    g_free(FILENAME);
 
     return status;
 }
@@ -43,7 +46,7 @@ static void activate(GtkApplication *app, gpointer user_data) {
     gtk_window_set_title(GTK_WINDOW(window), "Simple GTK Notepad");
     gtk_window_set_default_size(GTK_WINDOW(window), 600, 400);
     g_signal_connect(
-        window, "destroy", G_CALLBACK(gtk_window_destroy), NULL);
+        window, "destroy", G_CALLBACK(gtk_window_close), NULL);
 
 
     // Working on the layout.
@@ -68,15 +71,17 @@ static void activate(GtkApplication *app, gpointer user_data) {
         text_view);
 
     // Handling expansion.
-    gtk_widget_set_hexpand(vbox, TRUE);
-    gtk_widget_set_hexpand(scrolled_window, TRUE);
-    gtk_widget_set_hexpand(text_view, TRUE);
+    gtk_widget_set_vexpand(vbox, TRUE);
+    gtk_widget_set_vexpand(scrolled_window, TRUE);
+    gtk_widget_set_vexpand(text_view, TRUE);
     gtk_widget_set_size_request(text_view, 600, 400);
     gtk_widget_set_size_request(scrolled_window, 600, 400);
 
     g_signal_connect(open_button, "clicked", G_CALLBACK(on_open_clicked),
         text_view);
-    g_signal_connect(save_button, "clicked", G_CALLBACK(on_save_clicked),
+    // g_signal_connect(save_button, "clicked", G_CALLBACK(on_save_clicked),
+    //     text_view);
+    g_signal_connect(save_button, "clicked", G_CALLBACK(on_save_clicked2),
         text_view);
 
 
@@ -100,6 +105,7 @@ static void on_file_selected(GObject *object, GAsyncResult *res,
     file = gtk_file_dialog_open_finish(dialog, res, NULL);
     if (file) {
         filename = g_file_get_path(file);
+        FILENAME = g_strdup(filename);
 
         if (g_file_get_contents(filename, &content, &length, &error)) {
             buffer = gtk_text_view_get_buffer(GTK_TEXT_VIEW(text_view));
@@ -129,35 +135,50 @@ static void on_open_clicked(GtkWidget *widget, gpointer text_view) {
 }
 
 
-static void on_save_clicked(GtkWidget *widget, gpointer text_view) {
-    /* This function runs when the "save" button is clicked. */
-    GtkFileDialog *dialog;
-    dialog = gtk_file_dialog_new();
-    gtk_file_dialog_open(dialog, GTK_WINDOW(widget), NULL,
-        on_save_file_selected, NULL);
-}
+// static void on_save_clicked(GtkWidget *widget, gpointer text_view) {
+//     /* This function runs when the "save" button is clicked. */
+//     GtkFileDialog *dialog;
+//     dialog = gtk_file_dialog_new();
+//     gtk_file_dialog_save(dialog, GTK_WINDOW(widget), NULL,
+//         on_save_file_selected, NULL);
+// }
 
 
-static void on_save_file_selected(GObject *object, GAsyncResult *res,
-    gpointer user_data) {
-    /* This function saves the file contents. */
-    GtkFileDialog *dialog = GTK_FILE_DIALOG(object);
-    GFile *file;
-    gchar *filename;
+static void on_save_clicked2(GtkWidget *widget, gpointer text_view) {
+    /* This function saves the currently opened file. */
     GtkTextBuffer *buffer;
-    gchar *content;
     GtkTextIter start, end;
+    gchar *content;
 
-    file = gtk_file_dialog_open_finish(dialog, res, NULL);
-    if (file) {
-        filename = g_file_get_path(file);
-
-        buffer = gtk_text_view_get_buffer(GTK_TEXT_VIEW(text_view));
-        gtk_text_buffer_get_bounds(buffer, &start, &end);
-        content = gtk_text_buffer_get_text(buffer, &start, &end, FALSE);
-        g_file_set_contents(filename, content, -1, NULL);
-        g_free(filename);
-        g_free(content);
-    }
-    gtk_window_destroy(GTK_WINDOW(dialog));
+    buffer = gtk_text_view_get_buffer(GTK_TEXT_VIEW(text_view));
+    gtk_text_buffer_get_bounds(buffer, &start, &end);
+    content = gtk_text_buffer_get_text(buffer, &start, &end, FALSE);
+    g_file_set_contents(FILENAME, content, -1, NULL);
+    
+    g_free(content);
 }
+
+
+// static void on_save_file_selected(GObject *object, GAsyncResult *res,
+//     gpointer user_data) {
+//     /* This function saves the file contents. */
+//     GtkFileDialog *dialog = GTK_FILE_DIALOG(object);
+//     GFile *file;
+//     gchar *filename;
+//     GtkTextBuffer *buffer;
+//     gchar *content;
+//     GtkTextIter start, end;
+
+//     file = gtk_file_dialog_open_finish(dialog, res, NULL);
+//     if (file) {
+//         filename = g_file_get_path(file);
+
+//         buffer = gtk_text_view_get_buffer(GTK_TEXT_VIEW(text_view));
+//         gtk_text_buffer_get_bounds(buffer, &start, &end);
+//         content = gtk_text_buffer_get_text(buffer, &start, &end, FALSE);
+//         g_file_set_contents(filename, content, -1, NULL);
+//         g_free(filename);
+//         g_free(content);
+//     }
+//     gtk_window_destroy(GTK_WINDOW(dialog));
+// }
