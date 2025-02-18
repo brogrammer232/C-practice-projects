@@ -9,3 +9,5 @@ gcc -o output ${1}
 if [[ 0 == ${?} ]] then
 	./output
 fi
+
+rm output
